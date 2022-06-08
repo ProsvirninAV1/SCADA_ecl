@@ -8,14 +8,18 @@ namespace ECL.Classes
 {
     public class IntPack
 	{
-		public uint _status;
-
-        public IntPack(ref uint status)
+		public IntPack()
         {
-            _status = status;
+            
         }
 
-        public void setBit(int start, bool nvalue)
+		public uint Value
+		{
+			get;
+			private set;
+		}
+
+		public void setBit(int start, bool nvalue)
 		{
 			setBits(start, start, nvalue ? 1u : 0u);
 		}
@@ -24,7 +28,7 @@ namespace ECL.Classes
 		{
 			int bitsCount = end - start + 1;
 			UInt32 valueMask = (((UInt32)1 << bitsCount) - 1) << start;
-			_status = ((_status & ~valueMask) | ((nvalue << start) & valueMask));
+			Value = ((Value & ~valueMask) | ((nvalue << start) & valueMask));
 		}
 	}
 }

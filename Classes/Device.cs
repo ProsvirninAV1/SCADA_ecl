@@ -9,18 +9,17 @@ namespace SCADA_ecl.Classes
 {
     public class Device
     {
-        private uint _status;
         private uint _qual = 192;
 
         public IntPack statusSet;
         private ChmiPostersStatuses chmiPostersStatuses = new ChmiPostersStatuses();
 
-        private UInt16 _qfStatus = 1;
-        private bool _accident = true;
+        private UInt16 _qfStatus;
+        private bool _accident;
         private bool _malfunction;
         private uint _controlMode;
         private bool _call;
-        private uint _basketStatus = 1;
+        private uint _basketStatus;
 
         private uint _command_error_for_Arm;
         private uint _command_for_Arm;
@@ -28,10 +27,10 @@ namespace SCADA_ecl.Classes
 
         public Device()
         {
-            statusSet = new IntPack(ref _status);
+            statusSet = new IntPack();
         }
 
-        public uint Status { get => statusSet._status;}
+        public uint Status { get => statusSet.Value; }
 
         public void StatusForArm()
         {
@@ -51,10 +50,7 @@ namespace SCADA_ecl.Classes
                 statusSet.setBits(23, 25, _command_error_for_Arm);
                 statusSet.setBits(26, 28, _command_for_Arm);
                 statusSet.setBits(29, 31, _command_location_for_Arm);
-                //_status = output.value;
             }
-
-            //SetValue("status_for_Arm", new PinValue(_status, _qual, DateTime.Now));
 
             //blockWorkOrRepair = repairPosterStatus.statusOfPosterRepair;
         }
