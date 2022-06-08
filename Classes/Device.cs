@@ -7,19 +7,12 @@ using System.Threading.Tasks;
 
 namespace SCADA_ecl.Classes
 {
-    public class Device
+    public class Device: BaseIm
     {
-        private uint _qual = 192;
-
-        public IntPack statusSet;
         private ChmiPostersStatuses chmiPostersStatuses = new ChmiPostersStatuses();
 
-        private UInt16 _qfStatus;
-        private bool _accident;
-        private bool _malfunction;
-        private uint _controlMode;
         private bool _call;
-        private uint _basketStatus;
+        private uint _basketStatus = 1;
 
         private uint _command_error_for_Arm;
         private uint _command_for_Arm;
@@ -36,11 +29,7 @@ namespace SCADA_ecl.Classes
         {
             if (_qual == 192)
             {
-                statusSet.setBits(0, 2, Convert.ToUInt16(_qfStatus));
-                statusSet.setBit(3, _accident);
-                statusSet.setBit(4, _malfunction);
-                statusSet.setBit(5, _controlMode == 2);//местное
-                statusSet.setBit(6, _controlMode == 1);//дистанционное
+                base.StatusForArm();
                 statusSet.setBit(7, _call);
                 statusSet.setBits(8, 10, Convert.ToUInt16(_basketStatus));
                 statusSet.setBit(11, chmiPostersStatuses.poster_work_line);
@@ -51,8 +40,6 @@ namespace SCADA_ecl.Classes
                 statusSet.setBits(26, 28, _command_for_Arm);
                 statusSet.setBits(29, 31, _command_location_for_Arm);
             }
-
-            //blockWorkOrRepair = repairPosterStatus.statusOfPosterRepair;
         }
     }
 }

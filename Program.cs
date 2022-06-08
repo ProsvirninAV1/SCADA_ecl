@@ -10,7 +10,7 @@ namespace SCADA_ecl
             Device device = new Device();
             device.StatusForArm();
             
-            Console.WriteLine(device.statusSet.Value);
+            //Console.WriteLine(device.statusSet.Value);
             Console.WriteLine(device.Status);
         }
     }
