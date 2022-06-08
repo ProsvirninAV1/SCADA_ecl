@@ -8,14 +8,14 @@ namespace ECL.Classes
 {
     public class IntPack
 	{
-		private uint _status;
+		public uint _status;
 
         public IntPack(ref uint status)
-		{
-			_status = status;
-		}
-				
-		public void setBit(int start, bool nvalue)
+        {
+            _status = status;
+        }
+
+        public void setBit(int start, bool nvalue)
 		{
 			setBits(start, start, nvalue ? 1u : 0u);
 		}

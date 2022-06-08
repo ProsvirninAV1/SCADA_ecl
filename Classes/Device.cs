@@ -12,15 +12,15 @@ namespace SCADA_ecl.Classes
         private uint _status;
         private uint _qual = 192;
 
-        private IntPack statusSet;
+        public IntPack statusSet;
         private ChmiPostersStatuses chmiPostersStatuses = new ChmiPostersStatuses();
 
-        private UInt16 _qfStatus;
-        private bool _accident;
+        private UInt16 _qfStatus = 1;
+        private bool _accident = true;
         private bool _malfunction;
         private uint _controlMode;
         private bool _call;
-        private uint _basketStatus;
+        private uint _basketStatus = 1;
 
         private uint _command_error_for_Arm;
         private uint _command_for_Arm;
@@ -31,9 +31,9 @@ namespace SCADA_ecl.Classes
             statusSet = new IntPack(ref _status);
         }
 
-        public uint Status { get => _status;}
+        public uint Status { get => statusSet._status;}
 
-        private void StatusForArm()
+        public void StatusForArm()
         {
             if (_qual == 192)
             {

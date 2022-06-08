@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SCADA_ecl.Classes;
+using System;
 
 namespace SCADA_ecl
 {
@@ -6,7 +7,11 @@ namespace SCADA_ecl
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Device device = new Device();
+            device.StatusForArm();
+            
+            Console.WriteLine(device.statusSet._status);
+            Console.WriteLine(device.Status);
         }
     }
 }
