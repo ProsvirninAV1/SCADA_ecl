@@ -1,14 +1,23 @@
-﻿using ECL.Classes;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using MasterSCADA.Script.FB;
+using MasterSCADA.Hlp;
+using FB;
+using FB.FBAttributes;
 using System.Linq;
-using System.Text;
+using System.Timers;
 using System.Threading.Tasks;
+using MasterSCADA.Hlp.Pins;
+using InSAT.OPC;
+using FB.VisualFB;
+using MasterSCADALib;
+using System.Globalization;
 
 namespace SCADA_ecl.Classes
 {
-    public class BaseIm //:ScriptBase
+    public class BaseIm //: ScriptBase
     {
+        private FBGroup _fBGroup;
+
         protected uint _qual = 192;
 
         protected IntPack statusSet = new IntPack();
@@ -18,13 +27,21 @@ namespace SCADA_ecl.Classes
         protected bool _malfunction;
         protected uint _controlMode;
 
-        bool _onIsLinked;
-        bool _offIsLinked;
-
+        public bool _onIsLinked;
+        public bool _offIsLinked;
+        protected bool _localIsLinked;
+        protected bool _disanceIsLinked;
 
         public BaseIm()
         {
-           
+
+        }
+
+        public BaseIm(FBGroup fBGroup, string on, string off)
+        {
+            _fBGroup = fBGroup;
+            _onIsLinked = IsLinked(on);
+            _offIsLinked = IsLinked(off);
         }
 
         public uint Status
@@ -35,12 +52,12 @@ namespace SCADA_ecl.Classes
             }
         }
 
-        //protected bool IsLinked(string name)
-        //{
-        //    var elem = HostFB.InputGroup.GetPin(name).TreePinHlp;
-        //    var connectedItems = elem.GetConnections(EConnectionTypeMask.ctGeneric);
-        //    return connectedItems.FirstOrDefault() == null ? false : true;
-        //}
+        protected bool IsLinked(string name)
+        {
+            var elem = _fBGroup.GetPin(name).TreePinHlp;
+            var connectedItems = elem.GetConnections(EConnectionTypeMask.ctGeneric);
+            return connectedItems.FirstOrDefault() == null ? false : true;
+        }
 
         protected void StatusForArm()
         {

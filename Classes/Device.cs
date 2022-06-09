@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SCADA_ecl.Classes
 {
-    public class Device: BaseIm
+    public class Device : BaseIm
     {
         private ChmiPostersStatuses chmiPostersStatuses = new ChmiPostersStatuses();
 
@@ -18,7 +18,11 @@ namespace SCADA_ecl.Classes
         private uint _command_for_Arm;
         private uint _command_location_for_Arm;
 
-        
+        public Device(FBGroup fBGroup, string on, string off) : base(fBGroup, on, off)
+        {
+
+        }
+
 
         public void StatusForArm()
         {
@@ -37,4 +41,5 @@ namespace SCADA_ecl.Classes
             }
         }
     }
+
 }
