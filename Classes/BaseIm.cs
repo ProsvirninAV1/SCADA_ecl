@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SCADA_ecl.Classes
 {
-    public class BaseIm
+    public class BaseIm //:ScriptBase
     {
         protected uint _qual = 192;
 
@@ -17,13 +17,30 @@ namespace SCADA_ecl.Classes
         protected bool _accident;
         protected bool _malfunction;
         protected uint _controlMode;
-        
+
+        bool _onIsLinked;
+        bool _offIsLinked;
+
+
         public BaseIm()
         {
            
         }
 
-        protected uint Status { get => statusSet.Value; }
+        public uint Status
+        {
+            get
+            {
+                return statusSet.Value;
+            }
+        }
+
+        //protected bool IsLinked(string name)
+        //{
+        //    var elem = HostFB.InputGroup.GetPin(name).TreePinHlp;
+        //    var connectedItems = elem.GetConnections(EConnectionTypeMask.ctGeneric);
+        //    return connectedItems.FirstOrDefault() == null ? false : true;
+        //}
 
         protected void StatusForArm()
         {

@@ -18,12 +18,7 @@ namespace SCADA_ecl.Classes
         private uint _command_for_Arm;
         private uint _command_location_for_Arm;
 
-        public Device()
-        {
-            statusSet = new IntPack();
-        }
-
-        public uint Status { get => statusSet.Value; }
+        
 
         public void StatusForArm()
         {
