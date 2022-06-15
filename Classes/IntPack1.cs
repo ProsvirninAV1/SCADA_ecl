@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ECL.Classes
 {
-    public class IntPack
+    public class IntPack1
 	{
-		public IntPack()
+		public IntPack1()
         {
             
         }
