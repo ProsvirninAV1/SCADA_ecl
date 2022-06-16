@@ -10,7 +10,7 @@ namespace SCADA_ecl.Classes
 {
     public class BaseIm : ScriptBase
     {
-        private ScriptFB _scriptFB;
+        protected ScriptFB _scriptFB;
 
         private bool _onIsLinked;
         private bool _offIsLinked;
@@ -18,20 +18,20 @@ namespace SCADA_ecl.Classes
         private bool _malfunctionIsLinked;
         private bool _localIsLinked;
         private bool _distanceIsLinked;
-
+        
         private string _statOn;
         private string _statOff;
         private string _accident;
         private string _malfunction;
         private string _local;
         private string _distance;
-
+        
         public bool Accident { get; private set; }
         public bool Malfunction { get; private set; }
 
         public IQFStatus QfStatus { get; private set; }
         public IQFStatus ModeStatus { get; private set; }
-
+                
         public OpcQuality Quality { get; private set; }
 
         public IntPack1 statusSet = new IntPack1();
@@ -54,14 +54,14 @@ namespace SCADA_ecl.Classes
             _malfunction = malfunction;
             _local = local;
             _distance = distance;
-
+           
             _onIsLinked = IsLinked(statOn);
             _offIsLinked = IsLinked(statOff);
             _accidentIsLinked = IsLinked(accident);
             _malfunctionIsLinked = IsLinked(malfunction);
             _localIsLinked = IsLinked(local);
             _distanceIsLinked = IsLinked(distance);
-
+            
             QfStatus = GetTypeDevice(_onIsLinked, _offIsLinked);
             ModeStatus = GetTypeDevice(_distanceIsLinked, _localIsLinked);
         }
@@ -69,6 +69,7 @@ namespace SCADA_ecl.Classes
         public PinValue GetStatusForARM()
         {
             RecalcQfStatus();
+
             if (Quality == OpcQuality.Good)
             {
                 statusSet.setBits(0, 2, Convert.ToUInt16(QfStatus.OnStatus));
@@ -82,8 +83,11 @@ namespace SCADA_ecl.Classes
 
         public void RecalcQfStatus()
         {
-            QfStatus.GetStatus(_scriptFB.GetValue(_statOn), _scriptFB.GetValue(_statOff));
-            ModeStatus.GetStatus(_scriptFB.GetValue(_distance), _scriptFB.GetValue(_local));
+            if (_onIsLinked || _offIsLinked)
+                QfStatus.GetStatus(_scriptFB.GetValue(_statOn), _scriptFB.GetValue(_statOff));
+
+            if(_localIsLinked || _distanceIsLinked)
+                ModeStatus.GetStatus(_scriptFB.GetValue(_distance), _scriptFB.GetValue(_local));
 
             if (_accidentIsLinked)
                 Accident = (bool?)_scriptFB.GetValue(_accident).Value ?? false;
@@ -105,7 +109,7 @@ namespace SCADA_ecl.Classes
             else return false;
         }
 
-        private IQFStatus GetTypeDevice(bool one, bool two)
+        protected IQFStatus GetTypeDevice(bool one, bool two)
         {
             if (one && two) return new QFOnOff();
             else if (one && !two) return new QFOn();
